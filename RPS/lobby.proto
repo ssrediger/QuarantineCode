@@ -1,5 +1,51 @@
 syntax = "proto3";
 
 message ConnectRequest {
-    
+    string name = 1;
+}
+
+message ConnectResponse {
+    bool accepted = 1;
+    int32 idToken = 2;
+}
+
+message GameListRequest {
+}
+
+enum GameType {
+    NONE = 0
+    ROCK_PAPER_SCISSORS = 1;
+}
+
+message Game {
+    GameType gameType = 1;
+    string name = 2;
+}
+
+message GameListResponse {
+    repeated Game gameList = 1;
+}
+
+message JoinGameQueueRequest {
+    Game game = 1;
+}
+
+message JoinGameQueueResponse {
+    bool accepted = 1;
+    int32 gameIdToken = 2;
+}
+
+message ExitGameQueueRequest {
+    int32 gameIdToken = 1;
+}
+
+message ExitGameQueueResponse {
+    bool accepted = 1;
+}
+
+service Lobby {
+    rpc ConnectToLobby (ConnectRequest) returns (connectResponse) {}
+    rpc GetGameList (GameListRequest) returns (GameListResponse) {}
+    rpc JoinGameQueue (JoinGameQueueRequest) returns (JoinGameQueueResponse) {}
+    rpc ExitGameQueue (ExitGameQueueRequest) returns (ExitGameQueueResponse) {}
 }
