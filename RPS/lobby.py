@@ -7,8 +7,9 @@ import lobby_pb2_grpc
 
 class Lobby(lobby_pb2_grpc.LobbyServicer):
     def ConnectToLobby(self, request, context):
-        return super().ConnectToLobby(request, context)
-    
+        print(request.name)
+        resp = lobby_pb2.ConnectResponse(accepted=False,idToken=45)
+        return resp
     def GetGameList(self, request, context):
         return super().GetGameList(request, context)
 
