@@ -1,3 +1,5 @@
+//python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. asdf.proto
+
 syntax = "proto3";
 
 message ConnectRequest {
@@ -13,7 +15,7 @@ message GameListRequest {
 }
 
 enum GameType {
-    NONE = 0
+    NONE = 0;
     ROCK_PAPER_SCISSORS = 1;
 }
 
@@ -44,7 +46,7 @@ message ExitGameQueueResponse {
 }
 
 service Lobby {
-    rpc ConnectToLobby (ConnectRequest) returns (connectResponse) {}
+    rpc ConnectToLobby (ConnectRequest) returns (ConnectResponse) {}
     rpc GetGameList (GameListRequest) returns (GameListResponse) {}
     rpc JoinGameQueue (JoinGameQueueRequest) returns (JoinGameQueueResponse) {}
     rpc ExitGameQueue (ExitGameQueueRequest) returns (ExitGameQueueResponse) {}
