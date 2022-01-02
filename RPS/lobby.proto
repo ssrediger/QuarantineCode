@@ -1,4 +1,4 @@
-//python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. asdf.proto
+//python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. lobby.proto
 
 syntax = "proto3";
 
@@ -19,17 +19,12 @@ enum GameType {
     ROCK_PAPER_SCISSORS = 1;
 }
 
-message Game {
-    GameType gameType = 1;
-    string name = 2;
-}
-
 message GameListResponse {
-    repeated Game gameList = 1;
+    repeated GameType gameList = 1;
 }
 
 message JoinGameQueueRequest {
-    Game game = 1;
+    GameType game = 1;
 }
 
 message JoinGameQueueResponse {
