@@ -44,20 +44,16 @@ class Lobby(lobby_pb2_grpc.LobbyServicer):
             else:
                 server_address = '{}:{}'.format(self.ip,str(self.port))
                 gameServer(server_address)
-                self.playerDB.addPLayerToGame(self.queue[0],request[1])
-                self.playerDB.addPLayerToGame(request[0],request[1])
+                self.playerDB.addPlayerToGame(self.queue[0],request[1])
+                self.playerDB.addPlayerToGame(request[0],request[1])
+                self.ExitGameQueue(self.rps_queue[0])
+                self.ExitGameQueue(request[0])
                 self.rps_queue = []
-
-
-
-
-
-
         else:
             pass 
 
     def ExitGameQueue(self, request, context):
-        return super().ExitGameQueue(request, context)
+        self.playerDB.removePlayerFromQueue(request)
 
 if __name__ == "__main__":
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
