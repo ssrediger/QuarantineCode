@@ -20,7 +20,7 @@ enum GameType {
 }
 
 message GameListResponse {
-    repeated GameType gameList = 1;
+    string gameList = 1;
 }
 
 message JoinGameQueueRequest {

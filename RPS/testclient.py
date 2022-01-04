@@ -27,9 +27,11 @@ if __name__ == '__main__':
             while inp.lower() != "l" and inp.lower() != "j" and inp.lower() != "e":
                 inp = input("What do you want to do? 'L','J','E'")
                 if inp.lower() == "l":
+                    print("1--------------------")
                     glreq = lobby_pb2.GameListRequest()
+                    print("2")
                     glresp = stub.GetGameList(glreq)
-                    print(glreq.gameList)
+                    print(glresp.gameList)
                 elif inp.lower() == "j":
                     ginp = ""
                     if ginp != '1':
