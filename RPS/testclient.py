@@ -1,4 +1,5 @@
 import grpc
+from lobby_pb2_grpc import LobbyServicer
 import lobby_pb2_grpc
 import lobby_pb2
 '''
@@ -19,6 +20,7 @@ if __name__ == '__main__':
         req = lobby_pb2.ConnectRequest(name=input("What's your name?"))
         resp = stub.ConnectToLobby(req)
         idToken = resp.idToken
+        print(str(idToken))
         gameQueued = None
         while True:
             inp = "" 
@@ -32,8 +34,8 @@ if __name__ == '__main__':
                     ginp = ""
                     if ginp != '1':
                         ginp = input("What game do you want to play? ('1' for RPS)")
-                        gameQueued = ginp
-                    jqreq = lobby_pb2.JoinGameQueueRequest(idToken,ginp)
+                        gameQueued = int(ginp)
+                    jqreq = lobby_pb2.JoinGameQueueRequest(idToken,int(ginp))
                     jqresp = stub.JoinGameQueue(jqreq)
                     print("{0}, {1}".format(jqresp.accepted,jqresp.gameIdToken))
                 elif inp.lower() == "e":
