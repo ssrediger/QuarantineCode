@@ -24,7 +24,8 @@ message GameListResponse {
 }
 
 message JoinGameQueueRequest {
-    GameType game = 1;
+    int32 idToken = 1;
+    GameType game = 2;
 }
 
 message JoinGameQueueResponse {
@@ -34,10 +35,12 @@ message JoinGameQueueResponse {
 
 message ExitGameQueueRequest {
     int32 gameIdToken = 1;
+    int32 idToken = 2;
 }
 
 message ExitGameQueueResponse {
-    bool accepted = 1;
+    int32 idToken = 1;
+    bool accepted = 2;
 }
 
 service Lobby {
