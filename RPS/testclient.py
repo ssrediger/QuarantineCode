@@ -27,9 +27,7 @@ if __name__ == '__main__':
             while inp.lower() != "l" and inp.lower() != "j" and inp.lower() != "e":
                 inp = input("What do you want to do? 'L','J','E'")
                 if inp.lower() == "l":
-                    print("1--------------------")
                     glreq = lobby_pb2.GameListRequest()
-                    print("2")
                     glresp = stub.GetGameList(glreq)
                     print(glresp.gameList)
                 elif inp.lower() == "j":
@@ -39,7 +37,7 @@ if __name__ == '__main__':
                         gameQueued = int(ginp)
                     jqreq = lobby_pb2.JoinGameQueueRequest(idToken,int(ginp))
                     jqresp = stub.JoinGameQueue(jqreq)
-                    print("{0}, {1}".format(jqresp.accepted,jqresp.gameIdToken))
+                    print(jqresp.accepted)
                 elif inp.lower() == "e":
                     lqreq = lobby_pb2.ExitGameQueueRequest(idToken,gameQueued) 
                     lqresp = stub.ExitGameQueue(lqreq)

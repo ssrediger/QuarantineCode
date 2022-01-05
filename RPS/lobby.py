@@ -28,10 +28,8 @@ class Lobby(lobby_pb2_grpc.LobbyServicer):
 
     def GetGameList(self, request, context):
         self.gameList = "1. Rock Paper Scissors" 
-        print('1')
         resp = lobby_pb2.GameListResponse(gameList=self.gameList)
 #    resp.gameList.extend(lobby_pb2.ROCK_PAPER_SCISSORS)
-        print('2')
         return resp
 
     def JoinGameQueue(self, request, context):
