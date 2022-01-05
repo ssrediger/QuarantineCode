@@ -21,7 +21,7 @@ class Lobby(lobby_pb2_grpc.LobbyServicer):
         self.port = 56789
         self.ip = socket.gethostbyname(socket.gethostname())
     def ConnectToLobby(self, request, context):
-        print(request.name)
+#        print(request.name)
         temp_id = self.playerDB.addPlayer(request.name)
         resp = lobby_pb2.ConnectResponse(accepted=True,idToken=temp_id)
         return resp
@@ -40,23 +40,23 @@ class Lobby(lobby_pb2_grpc.LobbyServicer):
         if request.game == 1:
             if len(self.rps_queue) == 0:
                 self.rps_queue.append(request.idToken)
-                print(self.rps_queue)
+#                print(self.rps_queue)
                 self.playerDB.addPlayerToQueue(request.idToken,request.game)
                 resp = lobby_pb2.JoinGameQueueResponse(accepted=True,gameIdToken=request.game)
-                print(resp)
-                print("Name: {0}, Queue: {1}, GAme: {2}".format(self.playerDB.player_db[request.idToken].name,self.playerDB.player_db[request.idToken].game_queue,self.playerDB.player_db[request.idToken].current_game))
+#                print(resp)
+#                print("Name: {0}, Queue: {1}, GAme: {2}".format(self.playerDB.player_db[request.idToken].name,self.playerDB.player_db[request.idToken].game_queue,self.playerDB.player_db[request.idToken].current_game))
                 return resp
             else:
                 server_address = '{}:{}'.format(self.ip,str(self.port))
-                gameServer(server_address)
                 print(server_address)
-                self.playerDB.addPlayerToGame(self.queue[0],request.game)
+#                gameServer(server_address)
+                self.playerDB.addPlayerToGame(self.rps_queue[0],request.game)
                 self.playerDB.addPlayerToGame(request.idToken,request.game)
-                print("Name: {0}, Queue: {1}, GAme: {2}".format(self.playerDB.player_db[request.idToken].name,self.playerDB.player_db[request.idToken].game_queue,self.playerDB.player_db[request.idToken].current_game))
+#                print("Name: {0}, Queue: {1}, GAme: {2}".format(self.playerDB.player_db[request.idToken].name,self.playerDB.player_db[request.idToken].game_queue,self.playerDB.player_db[request.idToken].current_game))
                 t1 = lobby_pb2.ExitGameQueueRequest(idToken=self.rps_queue[0],gameIdToken=request.game)
                 t2 = lobby_pb2.ExitGameQueueRequest(idToken=request.idToken,gameIdToken=request.game)
-                self.ExitGameQueue(t1)
-                self.ExitGameQueue(t2)
+                self.ExitGameQueue(t1,None)
+                self.ExitGameQueue(t2,None)
                 self.rps_queue = []
                 resp = lobby_pb2.JoinGameQueueResponse(accepted=True,gameIdToken=request.game)
                 return resp
@@ -66,7 +66,7 @@ class Lobby(lobby_pb2_grpc.LobbyServicer):
     def ExitGameQueue(self, request, context):
         self.playerDB.removePlayerFromQueue(request.idToken)
         resp = lobby_pb2.ExitGameQueueResponse(idToken=request.idToken,accepted=True)
-        print("Name: {0}, Queue: {1}, GAme: {2}".format(self.playerDB.player_db[request.idToken].name,self.playerDB.player_db[request.idToken].game_queue,self.playerDB.player_db[request.idToken].current_game))
+#        print("Name: {0}, Queue: {1}, GAme: {2}".format(self.playerDB.player_db[request.idToken].name,self.playerDB.player_db[request.idToken].game_queue,self.playerDB.player_db[request.idToken].current_game))
         return resp
 if __name__ == "__main__":
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
