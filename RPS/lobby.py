@@ -40,25 +40,33 @@ class Lobby(lobby_pb2_grpc.LobbyServicer):
         if request.game == 1:
             if len(self.rps_queue) == 0:
                 self.rps_queue.append(request.idToken)
+                print(self.rps_queue)
                 self.playerDB.addPlayerToQueue(request.idToken,request.game)
-                resp = lobby_pb2.JoinGameQueueResponse(True,request.game)
+                resp = lobby_pb2.JoinGameQueueResponse(accepted=True,gameIdToken=request.game)
+                print(resp)
+                print("Name: {0}, Queue: {1}, GAme: {2}".format(self.playerDB.player_db[request.idToken].name,self.playerDB.player_db[request.idToken].game_queue,self.playerDB.player_db[request.idToken].current_game))
                 return resp
             else:
                 server_address = '{}:{}'.format(self.ip,str(self.port))
                 gameServer(server_address)
+                print(server_address)
                 self.playerDB.addPlayerToGame(self.queue[0],request.game)
                 self.playerDB.addPlayerToGame(request.idToken,request.game)
-                self.ExitGameQueue(self.rps_queue[0])
-                self.ExitGameQueue(request.idToken)
+                print("Name: {0}, Queue: {1}, GAme: {2}".format(self.playerDB.player_db[request.idToken].name,self.playerDB.player_db[request.idToken].game_queue,self.playerDB.player_db[request.idToken].current_game))
+                t1 = lobby_pb2.ExitGameQueueRequest(idToken=self.rps_queue[0],gameIdToken=request.game)
+                t2 = lobby_pb2.ExitGameQueueRequest(idToken=request.idToken,gameIdToken=request.game)
+                self.ExitGameQueue(t1)
+                self.ExitGameQueue(t2)
                 self.rps_queue = []
-                resp = lobby_pb2.JoinGameQueueResponse(True,request.game)
+                resp = lobby_pb2.JoinGameQueueResponse(accepted=True,gameIdToken=request.game)
                 return resp
         else:
             pass 
 
     def ExitGameQueue(self, request, context):
         self.playerDB.removePlayerFromQueue(request.idToken)
-        resp = lobby_pb2.ExitGameQueueResponse(True,request.idToken)
+        resp = lobby_pb2.ExitGameQueueResponse(idToken=request.idToken,accepted=True)
+        print("Name: {0}, Queue: {1}, GAme: {2}".format(self.playerDB.player_db[request.idToken].name,self.playerDB.player_db[request.idToken].game_queue,self.playerDB.player_db[request.idToken].current_game))
         return resp
 if __name__ == "__main__":
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))

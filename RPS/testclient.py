@@ -32,16 +32,17 @@ if __name__ == '__main__':
                     print(glresp.gameList)
                 elif inp.lower() == "j":
                     ginp = ""
-                    if ginp != '1':
+                    while ginp != '1':
                         ginp = input("What game do you want to play? ('1' for RPS)")
-                        gameQueued = int(ginp)
-                    jqreq = lobby_pb2.JoinGameQueueRequest(idToken,int(ginp))
+                    gameQueued = int(ginp)
+                    jqreq = lobby_pb2.JoinGameQueueRequest(idToken=idToken,game=int(ginp))
                     jqresp = stub.JoinGameQueue(jqreq)
                     print(jqresp.accepted)
+                    
                 elif inp.lower() == "e":
-                    lqreq = lobby_pb2.ExitGameQueueRequest(idToken,gameQueued) 
+                    lqreq = lobby_pb2.ExitGameQueueRequest(idToken=idToken,gameIdToken=gameQueued) 
                     lqresp = stub.ExitGameQueue(lqreq)
                     gameQueued = None
-                    print("{0}, {1}".format(lqresp.accepted,lqresp.gameIdToken))
+                    print("dun")
                 else:
                     pass
